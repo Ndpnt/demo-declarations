@@ -1,15 +1,15 @@
 {
   "name": "demo",
   "services": {
-    "repository": "https://github.com/OpenTermsArchive/demo-declarations.git",
+    "repository": "https://github.com/Ndpnt/demo-declarations.git",
     "declarationsPath": "./declarations"
   },
   "recorder": {
     "versions": {
       "storage": {
         "git": {
-          "snapshotIdentiferTemplate": "https://github.com/OpenTermsArchive/demo-snapshots/commit/%SNAPSHOT_ID",
-          "repository": "git@github.com:OpenTermsArchive/demo-versions.git",
+          "snapshotIdentiferTemplate": "https://github.com/Ndpnt/demo-snapshots/commit/%SNAPSHOT_ID",
+          "repository": "git@github.com:Ndpnt/demo-versions.git",
           "path": "./data/versions"
         }
       }
@@ -17,7 +17,7 @@
     "snapshots": {
       "storage": {
         "git": {
-          "repository": "git@github.com:OpenTermsArchive/demo-snapshots.git",
+          "repository": "git@github.com:Ndpnt/demo-snapshots.git",
           "path": "./data/snapshots"
         }
       }
@@ -35,15 +35,15 @@
   "reporter": {
     "githubIssues": {
       "repositories": {
-        "declarations": "OpenTermsArchive/demo-declarations",
-        "versions": "OpenTermsArchive/demo-versions",
-        "snapshots": "OpenTermsArchive/demo-snapshots"
+        "declarations": "Ndpnt/demo-declarations",
+        "versions": "Ndpnt/demo-versions",
+        "snapshots": "Ndpnt/demo-snapshots"
       }
     }
   },
   "dataset": {
     "title": "demo",
-    "versionsRepositoryURL": "https://github.com/OpenTermsArchive/demo-versions"
+    "versionsRepositoryURL": "https://github.com/Ndpnt/demo-versions"
   },
   "api": {
     "port": 3000
