@@ -54,7 +54,9 @@ jobs:
                 ed25519_fingerprint: $PLACEHOLDER
                 ota_source_repository: $PLACEHOLDER"
   
-          echo "$content" > deployment/inventory.yml
+          echo "$content" > deployment/inventory.yml &&
+          rm deployment/github-bot-private-key &&
+          rm deployment/.env
 
       - name: Update config
         run: |
