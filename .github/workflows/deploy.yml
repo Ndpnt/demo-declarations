@@ -10,6 +10,8 @@ jobs:
 
   deploy:
     needs: [ test ]
+    # Do not run on the creation of the repository
+    if: github.event.created != true
     runs-on: ubuntu-latest
 
     steps:
@@ -17,7 +19,7 @@ jobs:
 
       - name: Display GitHub Event Data
         run: echo '${{ toJSON(github.event) }}'
-        
+
       - name: Get target server hostname
         id: get_hostname
         uses: mikefarah/yq@master
