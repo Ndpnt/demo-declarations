@@ -16,8 +16,8 @@ permissions:
 
 jobs:
   first-time-setup:
-    # Ensure this action is run only once on the creation of a the repository
-    if: github.event.created == true && github.run_number == 1 
+    # Ensure this action is run only on the creation of the repository
+    if: github.event.created == true
 
     runs-on: ubuntu-latest
     steps:
