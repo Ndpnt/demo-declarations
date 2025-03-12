@@ -2,7 +2,8 @@ name: first-time-setup
 run-name: Setup
 
 on:
-  create:
+  push:
+    branches: [ main ]
 
 # Only keep latest run of this workflow
 concurrency:
