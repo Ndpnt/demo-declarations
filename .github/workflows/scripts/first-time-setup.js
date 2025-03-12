@@ -52,9 +52,7 @@ OTA_ENGINE_SMTP_PASSWORD=<your_smtp_password>
 OTA_ENGINE_GITHUB_TOKEN=<your_github_token>`;
 
   const privateKeyContent = `${securityComment}
------BEGIN OPENSSH PRIVATE KEY-----
-<your_private_key>
------END OPENSSH PRIVATE KEY-----`;
+<your_private_key>`;
 
   await fs.writeFile('deployment/inventory.yml', inventoryContent);
   await fs.writeFile('deployment/.env', envContent);
@@ -116,36 +114,32 @@ async function removeFederationRelatedCode() {
 
 async function updateMetadata(repoOwner, collectionName) {
   const metadataPath = 'metadata.yml';
-  const metadata = {
-    id: collectionName,
-    name: collectionName,
-    tagline: '',
-    description: '',
-    dataset: `https://github.com/${repoOwner}/${collectionName}-versions/releases`,
-    declarations: `https://github.com/${repoOwner}/${collectionName}-declarations`,
-    versions: `https://github.com/${repoOwner}/${collectionName}-versions`,
-    snapshots: `https://github.com/${repoOwner}/${collectionName}-snapshots`,
-    donations: '',
-    logo: '',
-    languages: [],
-    jurisdictions: [],
-    trackingPeriods: [
-      {
-        startDate: new Date().toISOString().split('T')[0],
-        schedule: "30 */12 * * *",
-        serverLocation: ''
-      }
-    ],
-    governance: {
-      [repoOwner]: {
-        url: '',
-        logo: '',
-        roles: ['administrator', 'curator', 'maintainer']
-      }
-    }
-  };
+  const today = new Date().toISOString().split('T')[0];
+  
+  const yamlContent = `id: ${collectionName}
+name: ${collectionName}
+tagline: ''
+description: ''
+dataset: https://github.com/${repoOwner}/${collectionName}-versions/releases
+declarations: https://github.com/${repoOwner}/${collectionName}-declarations
+versions: https://github.com/${repoOwner}/${collectionName}-versions
+snapshots: https://github.com/${repoOwner}/${collectionName}-snapshots
+donations: ''
+logo: ''
+languages: []
+jurisdictions: []
+trackingPeriods:
+  - startDate: ${today}
+    schedule: "30 */12 * * *"
+    serverLocation: ''
+governance:
+  ${repoOwner}:
+    url: ''
+    logo: ''
+    roles: [administrator, curator, maintainer]
+`;
 
-  await fs.writeFile(metadataPath, JSON.stringify(metadata, null, 2));
+  await fs.writeFile(metadataPath, yamlContent);
 }
 
 async function firstTimeSetup(repoOwner, repoName) {
