@@ -76,11 +76,11 @@ async function updateReadme(repoOwner, collectionName) {
 
   const setupInstructions = `> [!IMPORTANT]
 > *To finalize the setup of your repository, follow these steps:*
-> 1. *Update collection metadata in \`metadata.yml\`, following the [documentation](https://docs.opentermsarchive.org/collections/reference/metadata/)*
+> 1. *Update collection metadata in [\`metadata.yml\`](./metadata.yml), following the [documentation](https://docs.opentermsarchive.org/collections/reference/metadata/)*
 > 2. *Enable the AllContributors bot by following [this link](https://github.com/apps/allcontributors/installations/new)*
-> 3. *Update deployment files in \`deployment/\` following the [documentation](https://docs.opentermsarchive.org/deployment/how-to/deploy/)*
-> 3. *Remove this setup section from this README.md file*
-> 4. *Start adding your terms declarations following the [documentation](https://docs.opentermsarchive.org/terms/tutorials/track/#step-2-create-the-service-declaration)*
+> 3. *Update deployment files in [\`deployment/\`](./deployment/) following the [documentation](https://docs.opentermsarchive.org/deployment/how-to/deploy/)*
+> 4. *Remove this setup section from this README.md file*
+> 5. *Start adding terms declarations in the [\`declarations/\`](./declarations/) directory following the [documentation](https://docs.opentermsarchive.org/terms/tutorials/track/#step-2-create-the-service-declaration)*
 
 `;
 
