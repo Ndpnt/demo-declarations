@@ -80,7 +80,7 @@ async function updateReadme(repoOwner, collectionName) {
 > 2. *Enable the AllContributors bot by following [this link](https://github.com/apps/allcontributors/installations/new)*
 > 3. *Update deployment files in [\`deployment/\`](./deployment/) following the [documentation](https://docs.opentermsarchive.org/deployment/how-to/deploy/)*
 > 4. *Remove this setup section from this README.md file*
-> 5. *Start adding terms declarations in the [\`declarations/\`](./declarations/) directory following the [documentation](https://docs.opentermsarchive.org/terms/tutorials/track/#step-2-create-the-service-declaration)*
+> 5. *Create a \`declarations/\` directory and start adding terms declarations following the [documentation](https://docs.opentermsarchive.org/terms/tutorials/track/#step-2-create-the-service-declaration)*
 
 `;
 
