@@ -33,24 +33,23 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Create setup finalization issue
-        uses: octokit/request-action@v2.x
-        with:
-          route: POST /repos/{owner}/{repo}/issues
-          owner: ${{ github.repository_owner }}
-          repo: ${{ github.event.repository.name }}
-          title: 'Setup finalization'
-          body: |
-            Hi @${{ github.actor }}! 👋
-            
-            To finalize the setup of your repository, follow these steps\\:
+      - name: Authenticate GitHub CLI
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
 
-            - Update collection metadata in [`metadata.yml`](./metadata.yml), following the [documentation](https://docs.opentermsarchive.org/collections/reference/metadata/)
-            - Enable the AllContributors bot by following [this link](https://github.com/apps/allcontributors/installations/new)
-            - Update deployment files in [`deployment`](./deployment/) following the [documentation](https://docs.opentermsarchive.org/deployment/how-to/deploy/)
-            - Create a `declarations` directory and start adding terms declarations following the [documentation](https://docs.opentermsarchive.org/terms/tutorials/track/#step-2-create-the-service-declaration)
+      - name: Create setup finalization issue
+        run: |
+          gh issue create --title "Setup finalization" --body <<EOF
+          Hi @${{ github.actor }}! 👋
+            
+          To finalize the setup of your repository, follow these steps:
+
+          - Update collection metadata in [`metadata.yml`](./metadata.yml), following the [documentation](https://docs.opentermsarchive.org/collections/reference/metadata/)
+          - Enable the AllContributors bot by following [this link](https://github.com/apps/allcontributors/installations/new)
+          - Update deployment files in [`deployment`](./deployment/) following the [documentation](https://docs.opentermsarchive.org/deployment/how-to/deploy/)
+          - Create a `declarations` directory and start adding terms declarations following the [documentation](https://docs.opentermsarchive.org/terms/tutorials/track/#step-2-create-the-service-declaration)
+          EOF
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
 
       - name: Create contributors issue
         uses: octokit/request-action@v2.x
