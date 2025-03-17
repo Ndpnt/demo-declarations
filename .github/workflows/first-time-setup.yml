@@ -40,11 +40,9 @@ jobs:
           owner: ${{ github.repository_owner }}
           repo: ${{ github.event.repository.name }}
           title: 'Setup finalization'
-          body: >-
+          body: |
             Hi @${{ github.actor }}! 👋
-
             To finalize the setup of your repository, follow these steps:
-
             1. *Update collection metadata in [`metadata.yml`](./metadata.yml), following the [documentation](https://docs.opentermsarchive.org/collections/reference/metadata/)*
             2. *Enable the AllContributors bot by following [this link](https://github.com/apps/allcontributors/installations/new)*
             3. *Update deployment files in [`deployment`](./deployment/) following the [documentation](https://docs.opentermsarchive.org/deployment/how-to/deploy/)*
