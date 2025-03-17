@@ -66,7 +66,7 @@ jobs:
       - name: Create contributors issue
         id: create_contributors_issue
         run: |
-          ISSUE_URL=$(gh issue create --title "Manage contributors" --body-file contributors_issue_body.txt --json url --jq .url)
+          ISSUE_URL=$(gh issue create --title "Manage contributors" --body-file contributors_issue_body.txt)
           ISSUE_NUMBER=$(echo $ISSUE_URL | grep -o '[0-9]*$')
           echo "issue_number=$ISSUE_NUMBER" >> $GITHUB_OUTPUT
         env:
