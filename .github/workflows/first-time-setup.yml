@@ -31,7 +31,7 @@ jobs:
           node-version: '20'
 
       - name: Authenticate GitHub CLI
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
+        run: echo "${{ secrets.ORG_PAT }}" | gh auth login --with-token
 
       - name: Create setup finalization issue body file
         run: |
@@ -71,34 +71,26 @@ jobs:
 
       - name: Configure repository settings
         run: |
-          # Set repository description and website using GitHub API
-          curl -L \
-            -X PATCH \
-            -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            https://api.github.com/repos/${{ github.repository }} \
-            -d '{
-              "description": "Declarations for ${{ github.event.repository.name }}. Maintained by ${{ github.repository_owner }}.",
-              "homepage": "https://opentermsarchive.org",
-              "has_projects": false,
-              "has_wiki": false,
-              "allow_squash_merge": true,
-              "allow_merge_commit": false,
-              "allow_rebase_merge": false,
-              "delete_branch_on_merge": true,
-              "topics": ["terms-of-service", "terms-of-service-agreements", "terms-and-conditions", "open-terms-archive"]
-            }'
+          # Set repository description and website
+          gh repo edit \
+            --description "Declarations for ${{ github.event.repository.name }}. Maintained by ${{ github.repository_owner }}." \
+            --homepage "https://opentermsarchive.org" \
+            --enable-projects=false \
+            --enable-wiki=false \
+            --enable-squash-merge=true \
+            --enable-merge-commit=false \
+            --enable-rebase-merge=false \
+            --delete-branch-on-merge=true
 
-          # Remove default labels using GitHub API
-          for label in $(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/labels | jq -r '.[].name'); do
-            curl -L \
-              -X DELETE \
-              -H "Accept: application/vnd.github+json" \
-              -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-              -H "X-GitHub-Api-Version: 2022-11-28" \
-              https://api.github.com/repos/${{ github.repository }}/labels/$label
+          # Add topics
+          gh repo edit --add-topic terms-of-service,terms-of-service-agreements,terms-and-conditions,open-terms-archive
+
+          # Remove default labels
+          for label in $(gh label list --json name -q '.[].name'); do
+            gh label delete "$label" -y
           done
+        env:
+          GH_TOKEN: ${{ secrets.ORG_PAT }}
 
       - name: Create snapshots repository from template
         run: |
@@ -107,8 +99,8 @@ jobs:
             --private \
             --confirm
         env:
-          GH_REPO: ${{ github.repository }}
-
+          GITHUB_TOKEN: ${{ secrets.ORG_PAT }}
+          GH_TOKEN: ${{ secrets.ORG_PAT }}
 
       - name: Run first time setup script
         run: node .github/workflows/scripts/first-time-setup.js "${{ github.repository_owner }}" "${{ github.event.repository.name }}" "${{ steps.create_contributors_issue.outputs.issue_number }}"
