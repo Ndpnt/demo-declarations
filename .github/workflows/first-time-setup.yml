@@ -4,17 +4,14 @@ run-name: Setup
 on:
   push:
     branches: [ main ]
+  workflow_dispatch:
 
 # Only keep latest run of this workflow
 concurrency:
   group: first-time-setup
   cancel-in-progress: true
 
-permissions: 
-  actions: write
-  checks: write
-  contents: write
-  issues: write
+permissions: write-all
 
 jobs:
   first-time-setup:
@@ -81,3 +78,33 @@ jobs:
           commit_message: "Adapt template automatically"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure repository settings
+        run: |
+          # Set repository description and website
+          gh repo edit \
+            --description "Declarations for ${{ github.event.repository.name }}. Maintained by ${{ github.repository_owner }}." \
+            --homepage "https://opentermsarchive.org" \
+            --enable-projects=false \
+            --enable-wiki=false \
+            --enable-squash-merge=true \
+            --enable-merge-commit=false \
+            --enable-rebase-merge=false \
+            --delete-branch-on-merge=true
+
+          # Add topics
+          gh repo edit --add-topic terms-of-service,terms-of-service-agreements,terms-and-conditions,open-terms-archive
+
+          # Configure branch protection for main
+          gh api -X PUT "/repos/${{ github.repository }}/branches/main/protection" \
+            -f required_status_checks='{"strict":true,"contexts":["validate_modified_declarations","validate_schema","validate_metadata"]}' \
+            -f enforce_admins=false \
+            -f required_pull_request_reviews='{"required_approving_review_count":1}' \
+            -f allow_force_pushes=false \
+            -f allow_deletions=false \
+            -f required_linear_history=true
+
+          # Remove default labels
+          for label in $(gh label list --json name -q '.[].name'); do
+            gh label delete "$label" -y
+          done
