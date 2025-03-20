@@ -100,6 +100,16 @@ jobs:
               https://api.github.com/repos/${{ github.repository }}/labels/$label
           done
 
+      - name: Create snapshots repository from template
+        run: |
+          gh repo create "${{ github.repository_owner }}/${{ github.event.repository.name }}-snapshots" \
+            --template "OpenTermsArchive/demo-snapshots" \
+            --private \
+            --confirm
+        env:
+          GH_REPO: ${{ github.repository }}
+
+
       - name: Run first time setup script
         run: node .github/workflows/scripts/first-time-setup.js "${{ github.repository_owner }}" "${{ github.event.repository.name }}" "${{ steps.create_contributors_issue.outputs.issue_number }}"
 
@@ -109,3 +119,4 @@ jobs:
           commit_message: "Adapt template automatically"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
