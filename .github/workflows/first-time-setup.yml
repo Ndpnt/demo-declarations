@@ -95,15 +95,6 @@ jobs:
           # Add topics
           gh repo edit --add-topic terms-of-service,terms-of-service-agreements,terms-and-conditions,open-terms-archive
 
-          # Configure branch protection for main
-          gh api -X PUT "/repos/${{ github.repository }}/branches/main/protection" \
-            -f required_status_checks='{"strict":true,"contexts":["validate_modified_declarations","validate_schema","validate_metadata"]}' \
-            -f enforce_admins=false \
-            -f required_pull_request_reviews='{"required_approving_review_count":1}' \
-            -f allow_force_pushes=false \
-            -f allow_deletions=false \
-            -f required_linear_history=true
-
           # Remove default labels
           for label in $(gh label list --json name -q '.[].name'); do
             gh label delete "$label" -y
